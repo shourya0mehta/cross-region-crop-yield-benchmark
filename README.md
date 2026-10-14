@@ -1,10 +1,16 @@
-# iGUIDE Climate-Crop
+# The Split Decides the Score
 
-**Benchmark conclusions in crop-yield OOD prediction are partition-dependent —
-and transfer fails for concept-shift reasons, not distance.**
+**Partition instability in cross-region crop yield benchmarks.** Code, data
+builders, and committed results for the paper accepted at the Tackling
+Climate Change with Machine Learning workshop, NeurIPS 2026
+([OpenReview](https://openreview.net/forum?id=BpQscPjdG9)).
 
-Shourya Mehta | CS + GIS, University of Illinois Urbana-Champaign | svm5@illinois.edu
-In collaboration with Dr. Anand Padmanabhan, NSF I-GUIDE Institute
+On identical U.S. corn data, the best method, the benchmark's difficulty, and
+the verdict on meta-learning all change with how counties are grouped into
+regions; transfer failure tracks the held-out region's own predictability
+more than climatic distance.
+
+Shourya Viren Mehta | Cornell University | svm38@cornell.edu
 
 ---
 
@@ -60,15 +66,16 @@ clusters (8 folds).
 4. **Transfer fails where the local climate→yield function is weak or
    different, not where the climate is far away**: in-region ceiling
    correlates +0.74 [+0.42, +0.89] (perm p = 0.0001) with transfer R², and
-   after normalizing by the ceiling no distance measure survives a
-   leverage check; per-region coefficient vectors have mean pairwise cosine
+   after normalizing by the ceiling the covariate-distance association
+   collapses once a single influential fold is removed, and label distance
+   is weaker and only suggestive; per-region coefficient vectors have mean pairwise cosine
    0.15–0.28, with the irrigated Fruitful Rim orthogonal (−0.01) to the rest.
 
 ## Reproduce Table 1 (one command)
 
 ```bash
-git clone https://github.com/shourya0mehta/iGUIDE-Climate-Crop
-cd iGUIDE-Climate-Crop
+git clone https://github.com/shourya0mehta/cross-region-crop-yield-benchmark
+cd cross-region-crop-yield-benchmark
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python training/make_main_table.py
 ```
@@ -128,3 +135,15 @@ conditioning beats its ablation in all six runs (+0.07 to +0.17 macro R²).
   bottleneck reading not corroborated here (FINDINGS §3.5)
 - Lin et al., *CropNet* (KDD 2024) — source of the USDA yield + WRF-HRRR
   weather county-year data
+
+## Cite
+
+```bibtex
+@inproceedings{mehta2026split,
+  title     = {The Split Decides the Score: Partition Instability in Cross-Region Crop Yield Benchmarks},
+  author    = {Mehta, Shourya Viren},
+  booktitle = {Tackling Climate Change with Machine Learning workshop at NeurIPS 2026},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=BpQscPjdG9}
+}
+```
